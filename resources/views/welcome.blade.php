@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     </head>
     <body class="antialiased">
@@ -160,10 +161,17 @@
 	  <div style="min-height: 240px;">
 		  <p>Select categories, pages or add custom links to menus.</p>
 		  @if($desiredMenu != '')
-			<ul class="menu ui-sortable" id="menuitems">
+		  <ul class="menu ui-sortable" id="menuitems">
   @if(!empty($menuitems))
 	@foreach($menuitems as $key=>$item)
-	  <li data-id="{{$item->id}}"><span class="menu-item-bar"><i class="fa fa-arrows"></i> @if(empty($item->name)) {{$item->title}} @else {{$item->name}} @endif <a href="#collapse{{$item->id}}" class="pull-right" data-toggle="collapse"><i class="caret"></i></a></span>
+	  <li data-id="{{$item->id}}">
+		<span class="menu-item-bar">
+			<a href="#collapse{{$item->id}}" class="pull-right" data-toggle="collapse">
+				<i class="fa fa-arrows"></i> 
+				@if(empty($item->name)) {{$item->title}} @else {{$item->name}} @endif 
+				<i class="fa-sharp fa-solid fa-caret-down"></i>
+			</a>
+		</span>
 	    <div class="collapse" id="collapse{{$item->id}}">
 	      <div class="input-box">
 	        <form method="post" action="{{url('update-menuitem')}}/{{$item->id}}">
@@ -192,7 +200,14 @@
 		  @if(isset($item->children))
 		    @foreach($item->children as $m)
 		  	  @foreach($m as $in=>$data)
-			    <li data-id="{{$data->id}}" class="menu-item"> <span class="menu-item-bar"><i class="fa fa-arrows"></i> @if(empty($data->name)) {{$data->title}} @else {{$data->name}} @endif <a href="#collapse{{$data->id}}" class="pull-right" data-toggle="collapse"><i class="caret"></i></a></span>
+			    <li data-id="{{$data->id}}" class="menu-item"> 
+					<span class="menu-item-bar">
+					   <a href="#collapse{{$data->id}}" class="pull-right" data-toggle="collapse">
+							<i class="fa fa-arrows"></i> 
+							@if(empty($data->name)) {{$data->title}} @else {{$data->name}} @endif 
+							<i class="fa-sharp fa-solid fa-caret-down"></i>
+						</a>
+					</span>
 			      <div class="collapse" id="collapse{{$data->id}}">
 			        <div class="input-box">
 			          <form method="post" action="{{url('update-menuitem')}}/{{$data->id}}">
@@ -217,7 +232,9 @@
 					  </form>
 				    </div>
 				  </div>
-			      <ul></ul>
+			      <ul>
+		
+				  </ul>
 		        </li>
 		      @endforeach
 	        @endforeach	
@@ -307,17 +324,6 @@ $("#add-custom-link").click(function(){
 })
 </script>
 <script>
-var group = $("#menuitems").sortable({
-  group: 'serialization',
-  onDrop: function ($item, container, _super) {
-    var data = group.sortable("serialize").get();	    
-    var jsonString = JSON.stringify(data, null, ' ');
-    $('#serialize_output').text(jsonString);
-  	  _super($item, container);
-  }
-});
-</script>	
-<script>
 $('#saveMenu').click(function(){
   var menuid = <?=$desiredMenu->id?>;
   var location = $('input[name="location"]:checked').val();
@@ -333,6 +339,18 @@ $('#saveMenu').click(function(){
   })	
 })
 </script>
+<script>
+var group = $("#menuitems").sortable({
+  group: 'serialization',
+  onDrop: function ($item, container, _super) {
+    var data = group.sortable("serialize").get();	    
+    var jsonString = JSON.stringify(data, null, ' ');
+    $('#serialize_output').text(jsonString);
+  	  _super($item, container);
+  }
+});
+</script>	
+
 @endif		
 <style>
   .item-list,.info-box{background: #fff;padding: 10px;}
