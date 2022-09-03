@@ -14,19 +14,29 @@ class menuController extends Controller
 {	
   public function index(){
     $menuitems = '';
-    $desiredMenu = '';  
+
+    $selectedMenu = ''; 
+    if($_GET['id'] == 'new') {
+      $selectedMenu = '';
+    }
+
     if(isset($_GET['id']) && $_GET['id'] != 'new'){
       $id = $_GET['id'];
-      $desiredMenu = menu::where('id',$id)->first();
-      if($desiredMenu->content != ''){
-        $menuitems = json_decode($desiredMenu->content);
+      $selectedMenu = menu::where('id',$id)->first();
+      if($selectedMenu->content != ''){
+        // dd($selectedMenu->content);
+        $menuitems = json_decode($selectedMenu->content);
+        // dd($menuitems);
         $menuitems = $menuitems[0]; 
+        // dd($menuitems);
         foreach($menuitems as $menu){
           $menu->title = menuitem::where('id',$menu->id)->value('title');
           $menu->name = menuitem::where('id',$menu->id)->value('name');
           $menu->slug = menuitem::where('id',$menu->id)->value('slug');
           $menu->target = menuitem::where('id',$menu->id)->value('target');
           $menu->type = menuitem::where('id',$menu->id)->value('type');
+          
+          // children 1
           if(!empty($menu->children[0])){
             foreach ($menu->children[0] as $child) {
               $child->title = menuitem::where('id',$child->id)->value('title');
@@ -34,48 +44,69 @@ class menuController extends Controller
               $child->slug = menuitem::where('id',$child->id)->value('slug');
               $child->target = menuitem::where('id',$child->id)->value('target');
               $child->type = menuitem::where('id',$child->id)->value('type');
+
+              // children 2
+                if(!empty($child->children)){
+                  foreach ($child->children as $children) {
+                    foreach ($children as $child) {
+                      $child->title = menuitem::where('id',$child->id)->value('title');
+                      $child->name = menuitem::where('id',$child->id)->value('name');
+                      $child->slug = menuitem::where('id',$child->id)->value('slug');
+                      $child->target = menuitem::where('id',$child->id)->value('target');
+                      $child->type = menuitem::where('id',$child->id)->value('type');
+
+                      // children 3
+                      if(!empty($child->children)){
+                        foreach ($child->children as $children) {
+                          foreach ($children as $child) {
+                            $child->title = menuitem::where('id',$child->id)->value('title');
+                            $child->name = menuitem::where('id',$child->id)->value('name');
+                            $child->slug = menuitem::where('id',$child->id)->value('slug');
+                            $child->target = menuitem::where('id',$child->id)->value('target');
+                            $child->type = menuitem::where('id',$child->id)->value('type');
+
+                            // children 4
+                            if(!empty($child->children)){
+                              foreach ($child->children as $children) {
+                                foreach ($children as $child) {
+                                  $child->title = menuitem::where('id',$child->id)->value('title');
+                                  $child->name = menuitem::where('id',$child->id)->value('name');
+                                  $child->slug = menuitem::where('id',$child->id)->value('slug');
+                                  $child->target = menuitem::where('id',$child->id)->value('target');
+                                  $child->type = menuitem::where('id',$child->id)->value('type');
+                                }    
+                              }  
+                            } 
+
+                          }    
+                        }  
+                      } 
+                       
+                    }    
+                  }  
+                }  
+            }  
+          }
+          if(!empty($menu->children[0])){
+            // dd($menu->children[0]) ;
+            foreach ($menu->children[0] as $child) {
             }  
           }
         }
+        // dd($menuitems);
       }else{
-        $menuitems = menuitem::where('menu_id',$desiredMenu->id)->get();                    
+        $menuitems = menuitem::where('menu_id',$selectedMenu->id)->get();                    
       }             
-    }else{
-      $desiredMenu = menu::orderby('id','DESC')->first();
-      if($desiredMenu){
-        if($desiredMenu->content != ''){
-          $menuitems = json_decode($desiredMenu->content);
-          $menuitems = $menuitems[0]; 
-          foreach($menuitems as $menu){
-            $menu->title = menuitem::where('id',$menu->id)->value('title');
-            $menu->name = menuitem::where('id',$menu->id)->value('name');
-            $menu->slug = menuitem::where('id',$menu->id)->value('slug');
-            $menu->target = menuitem::where('id',$menu->id)->value('target');
-            $menu->type = menuitem::where('id',$menu->id)->value('type');
-            if(!empty($menu->children[0])){
-              foreach ($menu->children[0] as $child) {
-                $child->title = menuitem::where('id',$child->id)->value('title');
-                $child->name = menuitem::where('id',$child->id)->value('name');
-                $child->slug = menuitem::where('id',$child->id)->value('slug');
-                $child->target = menuitem::where('id',$child->id)->value('target');
-                $child->type = menuitem::where('id',$child->id)->value('type');
-              }  
-            }
-          }
-        }else{
-          $menuitems = menuitem::where('menu_id',$desiredMenu->id)->get();
-        }                                   
-      }           
     }
-    return view ('welcome',['categories'=>category::all(),'posts'=>post::all(),'menus'=>menu::all(),'desiredMenu'=>$desiredMenu,'menuitems'=>$menuitems]);
+    return view ('welcome',['categories'=>category::all(),'posts'=>post::all(),'menus'=>menu::all(),'selectedMenu'=>$selectedMenu,'menuitems'=>$menuitems]);
   }	
 
   public function store(Request $request){
 	$data = $request->all(); 
 	if(menu::create($data)){ 
-	  $newdata = menu::orderby('id','DESC')->first();          
-	  FacadesSession::flash('success','Menu saved successfully !');             
-	  return redirect("manage-menus?id=$newdata->id");
+	  $menu_data = menu::orderby('id','DESC')->first();          
+	  // FacadesSession::flash('success','Menu saved successfully !');          
+	  return redirect("manage-menus?id=$menu_data->id")->with('success','Menu saved successfully !');
 	}else{
 	  return redirect()->back()->with('error','Failed to save menu !');
 	}
@@ -193,13 +224,13 @@ class menuController extends Controller
   }
 
   public function updateMenu(Request $request){
-    $newdata = $request->all(); 
+    $menu_data = $request->all(); 
     $menu=menu::findOrFail($request->menuid);            
     $content = $request->data; 
-    $newdata = [];  
-    $newdata['location'] = $request->location;       
-    $newdata['content'] = json_encode($content);
-    $menu->update($newdata); 
+    $menu_data = [];  
+    $menu_data['location'] = $request->location;       
+    $menu_data['content'] = json_encode($content);
+    $menu->update($menu_data); 
   }
 
   public function updateMenuItem(Request $request){
@@ -217,12 +248,12 @@ class menuController extends Controller
       $maindata = $data[0];            
       if($in == ''){
         unset($data[0][$key]);
-        $newdata = json_encode($data); 
-        $menu->update(['content'=>$newdata]);                         
+        $menu_data = json_encode($data); 
+        $menu->update(['content'=>$menu_data]);                         
       }else{
         unset($data[0][$key]['children'][0][$in]);
-	    $newdata = json_encode($data);
-        $menu->update(['content'=>$newdata]); 
+	    $menu_data = json_encode($data);
+        $menu->update(['content'=>$menu_data]); 
       }
     }
     $menuitem->delete();
@@ -232,6 +263,6 @@ class menuController extends Controller
   public function destroy(Request $request){
     menuitem::where('menu_id',$request->id)->delete();  
     menu::findOrFail($request->id)->delete();
-    return redirect('manage-menus')->with('success','Menu deleted successfully');
+    return redirect('manage-menus?id=new')->with('success','Menu deleted successfully');
   }		
 }	
