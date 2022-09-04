@@ -178,6 +178,7 @@
 								@if($selectedMenu != '')
 								<ul class="menu ui-sortable" id="menuitems">
 									@if(!empty($menuitems))
+	
 											@foreach($menuitems as $key=>$item)
 												<li data-id="{{$item->id}}">
 													<span class="menu-item-bar">
@@ -216,7 +217,8 @@
 														{{-- // children 1 --}}
 														@if(isset($item->children))
 															@foreach($item->children as $m)
-																@foreach($m as $in=>$data)
+															{{-- {{dd($m);}} --}}
+																@foreach($m as $in1=>$data)
 																	<li data-id="{{$data->id}}" class="menu-item"> 
 																		<span class="menu-item-bar">
 																		<a href="#collapse{{$data->id}}" class="pull-right" data-toggle="collapse">
@@ -244,7 +246,7 @@
 																					@endif
 																					<div class="form-group">
 																					<button class="btn btn-sm btn-primary">Save</button>
-																					<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in}}" class="btn btn-sm btn-danger">Delete</a>
+																					<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}" class="btn btn-sm btn-danger">Delete</a>
 																					</div>
 																				</form>
 																			</div>
@@ -254,7 +256,7 @@
 																			{{-- // children 2 --}}
 																			@if(isset($data->children))
 																				@foreach($data->children as $m)
-																				@foreach($m as $in=>$data)
+																				@foreach($m as $in2=>$data)
 																					<li data-id="{{$data->id}}" class="menu-item"> 
 																						<span class="menu-item-bar">
 																						<a href="#collapse{{$data->id}}" class="pull-right" data-toggle="collapse">
@@ -282,7 +284,7 @@
 																							@endif
 																							<div class="form-group">
 																							<button class="btn btn-sm btn-primary">Save</button>
-																							<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in}}" class="btn btn-sm btn-danger">Delete</a>
+																							<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}/{{$in2}}" class="btn btn-sm btn-danger">Delete</a>
 																							</div>
 																						</form>
 																						</div>
@@ -291,7 +293,7 @@
 																						{{-- // children 3 --}}
 																						@if(isset($data->children))
 																							@foreach($data->children as $m)
-																							@foreach($m as $in=>$data)
+																							@foreach($m as $in3=>$data)
 																								<li data-id="{{$data->id}}" class="menu-item"> 
 																									<span class="menu-item-bar">
 																									<a href="#collapse{{$data->id}}" class="pull-right" data-toggle="collapse">
@@ -319,7 +321,7 @@
 																										@endif
 																										<div class="form-group">
 																										<button class="btn btn-sm btn-primary">Save</button>
-																										<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in}}" class="btn btn-sm btn-danger">Delete</a>
+																										<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}/{{$in2}}/{{$in3}}" class="btn btn-sm btn-danger">Delete</a>
 																										</div>
 																									</form>
 																									</div>
@@ -328,7 +330,7 @@
 																									{{-- // children 4 --}}
 																									@if(isset($data->children))
 																										@foreach($data->children as $m)
-																										@foreach($m as $in=>$data)
+																										@foreach($m as $in4=>$data)
 																											<li data-id="{{$data->id}}" class="menu-item"> 
 																												<span class="menu-item-bar">
 																												<a href="#collapse{{$data->id}}" class="pull-right" data-toggle="collapse">
@@ -356,7 +358,7 @@
 																													@endif
 																													<div class="form-group">
 																													<button class="btn btn-sm btn-primary">Save</button>
-																													<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in}}" class="btn btn-sm btn-danger">Delete</a>
+																													<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}/{{$in2}}/{{$in3}}/{{$in4}}" class="btn btn-sm btn-danger">Delete</a>
 																													</div>
 																												</form>
 																												</div>
