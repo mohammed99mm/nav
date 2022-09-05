@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('menuitems', function (Blueprint $table) {
             $table->bigInteger('id',20)->autoIncrement()->unsigned();
             $table->char('title',255);
-            $table->char('location',255)->nullable();
-            $table->longtext('content')->nullable();
+            $table->char('name',255);
+            $table->char('slug',255);
+            $table->char('type',255);
+            $table->char('target',255);
+            $table->char('menu_id',20); //bigInteger
             $table->timestamps();
         });
     }
@@ -29,28 +32,30 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('menuitems');
     }
 };
-
 
 
 // SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 // START TRANSACTION;
 // SET time_zone = "+00:00";
 
-// CREATE TABLE `menus` (
+// CREATE TABLE `menuitems` (
 //   `id` bigint(20) UNSIGNED NOT NULL,
 //   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-//   `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-//   `content` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+//   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+//   `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+//   `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+//   `target` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+//   `menu_id` int(11) NOT NULL,
 //   `created_at` timestamp NULL DEFAULT NULL,
 //   `updated_at` timestamp NULL DEFAULT NULL
 // ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-// ALTER TABLE `menus`
+// ALTER TABLE `menuitems`
 //   ADD PRIMARY KEY (`id`);
 
-// ALTER TABLE `menus`
-//   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-// COMMIT;
+// ALTER TABLE `menuitems`
+//   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+// COMMIT;	
