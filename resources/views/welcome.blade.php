@@ -35,7 +35,7 @@
 		<div class="content info-box">
 				@if(count($menus) > 0)		
 				Select a menu to edit: 		
-				<form action="{{url('manage-menus')}}" class="form-inline">
+				<form action="{{route('manage-menus')}}" class="form-inline">
 					<select name="id">
 						@foreach($menus as $menu)
 							@if($selectedMenu != '')
@@ -49,7 +49,7 @@
 				</form> 
 				or
 				@endif 
-				<a href="{{url('manage-menus?id=new')}}">Create a new menu</a>.	
+				<a href="{{route('manage-menus','?id=new')}}">Create a new menu</a>.	
 		</div>
 
 
@@ -67,6 +67,7 @@
 							<div class="panel-body">						
 							<div class="item-list-body">
 									@foreach($categories as $cat)
+									{{-- {{$cat->id}} --}}
 									<p><input type="checkbox" name="select-category[]" value="{{$cat->id}}"> {{$cat->title}}</p>
 									@endforeach
 							</div>	
@@ -153,7 +154,7 @@
 				<h3><span>Menu Structure</span></h3>
 					@if($selectedMenu == '')
 						<h4>Create New Menu</h4>
-						<form method="post" action="{{url('create-menu')}}">
+						<form method="post" action="{{route('create-menu')}}">
 							{{csrf_field()}}
 							<div class="row">
 								<div class="col-sm-12">
@@ -178,7 +179,7 @@
 								@if($selectedMenu != '')
 								<ul class="menu ui-sortable" id="menuitems">
 									@if(!empty($menuitems))
-	
+	{{-- {{dd($selectedMenu->id);}} --}}
 											@foreach($menuitems as $key=>$item)
 												<li data-id="{{$item->id}}">
 													<span class="menu-item-bar">
@@ -190,7 +191,7 @@
 													</span>
 													<div class="collapse" id="collapse{{$item->id}}">
 													<div class="input-box">
-														<form method="post" action="{{url('update-menuitem')}}/{{$item->id}}">
+														<form method="post" action="{{route('update-menuitem',$item->id)}}">
 														{{csrf_field()}}
 														<div class="form-group">
 															<label>Link Name</label>
@@ -207,7 +208,8 @@
 														@endif
 														<div class="form-group">
 															<button class="btn btn-sm btn-primary">Save</button>
-															<a href="{{url('delete-menuitem')}}/{{$item->id}}/{{$key}}" class="btn btn-sm btn-danger">Delete</a>
+															{{-- {{$item->id}} --}}
+															<a href="{{route('delete-menuitem',$item->id.'/'.$key)}}" class="btn btn-sm btn-danger">Delete</a>
 														</div>
 														</form>
 													</div>
@@ -229,7 +231,7 @@
 																		</span>
 																		<div class="collapse" id="collapse{{$data->id}}">
 																			<div class="input-box">
-																				<form method="post" action="{{url('update-menuitem')}}/{{$data->id}}">
+																				<form method="post" action="{{route('update-menuitem',$data->id)}}">
 																					{{csrf_field()}}
 																					<div class="form-group">
 																					<label>Link Name</label>
@@ -246,7 +248,7 @@
 																					@endif
 																					<div class="form-group">
 																					<button class="btn btn-sm btn-primary">Save</button>
-																					<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}" class="btn btn-sm btn-danger">Delete</a>
+																					<a href="{{route('delete-menuitem',$data->id.'/'.$key.'/'.$in1)}}" class="btn btn-sm btn-danger">Delete</a>
 																					</div>
 																				</form>
 																			</div>
@@ -267,7 +269,7 @@
 																						</span>
 																					<div class="collapse" id="collapse{{$data->id}}">
 																						<div class="input-box">
-																						<form method="post" action="{{url('update-menuitem')}}/{{$data->id}}">
+																						<form method="post" action="{{route('update-menuitem',$data->id)}}">
 																							{{csrf_field()}}
 																							<div class="form-group">
 																							<label>Link Name</label>
@@ -284,7 +286,7 @@
 																							@endif
 																							<div class="form-group">
 																							<button class="btn btn-sm btn-primary">Save</button>
-																							<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}/{{$in2}}" class="btn btn-sm btn-danger">Delete</a>
+																							<a href="{{route('delete-menuitem',$data->id.'/'.$key.'/'.$in1.'/'.$in2)}}" class="btn btn-sm btn-danger">Delete</a>
 																							</div>
 																						</form>
 																						</div>
@@ -304,7 +306,7 @@
 																									</span>
 																								<div class="collapse" id="collapse{{$data->id}}">
 																									<div class="input-box">
-																									<form method="post" action="{{url('update-menuitem')}}/{{$data->id}}">
+																									<form method="post" action="{{route('update-menuitem',$data->id)}}">
 																										{{csrf_field()}}
 																										<div class="form-group">
 																										<label>Link Name</label>
@@ -321,7 +323,7 @@
 																										@endif
 																										<div class="form-group">
 																										<button class="btn btn-sm btn-primary">Save</button>
-																										<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}/{{$in2}}/{{$in3}}" class="btn btn-sm btn-danger">Delete</a>
+																										<a href="{{route('delete-menuitem',$data->id.'/'.$key.'/'.$in1.'/'.$in2.'/'.$in3)}}" class="btn btn-sm btn-danger">Delete</a>
 																										</div>
 																									</form>
 																									</div>
@@ -341,7 +343,7 @@
 																												</span>
 																											<div class="collapse" id="collapse{{$data->id}}">
 																												<div class="input-box">
-																												<form method="post" action="{{url('update-menuitem')}}/{{$data->id}}">
+																												<form method="post" action="{{route('update-menuitem',$data->id)}}">
 																													{{csrf_field()}}
 																													<div class="form-group">
 																													<label>Link Name</label>
@@ -358,7 +360,7 @@
 																													@endif
 																													<div class="form-group">
 																													<button class="btn btn-sm btn-primary">Save</button>
-																													<a href="{{url('delete-menuitem')}}/{{$data->id}}/{{$key}}/{{$in1}}/{{$in2}}/{{$in3}}/{{$in4}}" class="btn btn-sm btn-danger">Delete</a>
+																													<a href="{{route('delete-menuitem',$data->id.'/'.$key.'/'.$in1.'/'.$in2.'/'.$in3.'/'.$in4)}}" class="btn btn-sm btn-danger">Delete</a>
 																													</div>
 																												</form>
 																												</div>
@@ -402,7 +404,7 @@
 								<div class="text-right">
 								<button class="btn btn-sm btn-primary" id="saveMenu">Save Menu</button>
 								</div>
-								<p><a href="{{url('delete-menu')}}/{{$selectedMenu->id}}">Delete Menu</a></p>
+								<p><a href="{{route('delete-menu',$selectedMenu->id)}}">Delete Menu</a></p>
 							@endif										
 						</div>
 
@@ -431,8 +433,9 @@
 			$.ajax({
 				type:"get",
 				data: {menuid:menuid,ids:ids},
-				url: "{{url('add-categories-to-menu')}}",				
-				success:function(res){				
+				url: "{{route('add-categories-to-menu')}}",				
+				success:function(res){	
+					// console.log(res);			
 				location.reload();
 				}
 			});
@@ -451,7 +454,7 @@
 			$.ajax({
 				type:"get",
 				data: {menuid:menuid,ids:ids},
-				url: "{{url('add-post-to-menu')}}",				
+				url: "{{route('add-post-to-menu')}}",				
 				success:function(res){
 				location.reload();
 				}
@@ -465,7 +468,7 @@
 				$.ajax({
 				type:"get",
 				data: {menuid:menuid,url:url,link:link},
-				url: "{{url('add-custom-link')}}",				
+				url: "{{route('add-custom-link')}}",				
 				success:function(res){
 					location.reload();
 				}
@@ -482,7 +485,7 @@
 			$.ajax({
 				type:"get",
 				data: {menuid:menuid,data:data,location:location},
-				url: "{{url('update-menu')}}",				
+				url: "{{route('update-menu')}}",				
 				success:function(res){
 				window.location.reload();
 				}

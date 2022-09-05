@@ -11,5 +11,5 @@ Route::get('add-post-to-menu',[menuController::class,'addPostToMenu'])->name('ad
 Route::get('add-custom-link',[menuController::class,'addCustomLink'])->name('add-custom-link');	
 Route::get('update-menu',[menuController::class,'updateMenu'])->name('update-menu');
 Route::post('update-menuitem/{id}',[menuController::class,'updateMenuItem'])->name('update-menuitem');
-Route::get('delete-menuitem/{id}/{key}/{in1?}/{in2?}/{in3?}/{in4?}',[menuController::class,'deleteMenuItem'])->name('delete-menuitem');
+Route::get('delete-menuitem/{id}/{key?}/{in1?}/{in2?}/{in3?}/{in4?}',[menuController::class,'deleteMenuItem'])->name('delete-menuitem');
 Route::get('delete-menu/{id}',[menuController::class,'destroy'])->name('delete-menu');	

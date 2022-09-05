@@ -116,6 +116,7 @@ class menuController extends Controller
     $data = $request->all();
     $menuid = $request->menuid;
     $ids = $request->ids;
+    // return $menuid;
     $menu = menu::findOrFail($menuid);
     if($menu->content == ''){
       foreach($ids as $id){
@@ -142,7 +143,15 @@ class menuController extends Controller
         $array['name'] = NULL;
         $array['type'] = 'category';
         $array['target'] = NULL;
-        $array['id'] = menuitem::where('slug',$array['slug'])->where('name',$array['name'])->where('type',$array['type'])->value('id');
+        $id_menuitems = menuitem::where('slug',$array['slug'])->where('name',$array['name'])->where('type',$array['type'])->get();
+        $id_menuitem = '';
+        foreach($id_menuitems as $id_menuitem ){
+           $id_menuitem = $id_menuitem->id ;
+        }
+        // return($id_menuitem);
+        // return($id_menuitems);
+        // return($array['id']);
+        $array['id'] = $id_menuitem;
         $array['children'] = [[]];
         array_push($olddata[0],$array);
         $oldata = json_encode($olddata);
@@ -242,8 +251,11 @@ class menuController extends Controller
 
   public function deleteMenuItem($id,$key,$in1='',$in2='',$in3='',$in4=''){        
     $menuitem = menuitem::findOrFail($id);
+    // dd($menuitem->menu_id);
     $menu = menu::where('id',$menuitem->menu_id)->first();
+    // dd($menu->content);
     if($menu->content != ''){
+      
       $data = json_decode($menu->content,true);            
       $maindata = $data[0];
         
@@ -272,7 +284,7 @@ class menuController extends Controller
         $menu->update(['content'=>$menu_data]); 
       }
       if(($in1 >= 0 && $in2 >= 0 && $in3 >= 0 && $in4 >= 0)){
-        // dd(4);
+        // dd('ok');
         unset($data[0][$key]['children'][0][$in1]['children'][0][$in2]['children'][0][$in3]['children'][0][$in4]);
 	    $menu_data = json_encode($data);
         $menu->update(['content'=>$menu_data]); 
@@ -287,4 +299,6 @@ class menuController extends Controller
     menu::findOrFail($request->id)->delete();
     return redirect('manage-menus?id=new')->with('success','Menu deleted successfully');
   }		
+
+  
 }	
