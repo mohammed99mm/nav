@@ -106,7 +106,7 @@ class menuController extends Controller
 	if(menu::create($data)){ 
 	  $menu_data = menu::orderby('id','DESC')->first();          
 	  // FacadesSession::flash('success','Menu saved successfully !');          
-    return redirect()->route('admin.manage-menus','?id='.$menu_data->id)->with('success','Menu saved successfully !');
+    return redirect()->route('manage-menus','?id='.$menu_data->id)->with('success','Menu saved successfully !');
 	}else{
 	  return redirect()->back()->with('error','Failed to save menu !');
 	}
@@ -297,7 +297,7 @@ class menuController extends Controller
   public function destroy(Request $request){
     menuitem::where('menu_id',$request->id)->delete();  
     menu::findOrFail($request->id)->delete();
-    return redirect()->route('admin.manage-menus','?id=new')->with('success','Menu deleted successfully');
+    return redirect()->route('manage-menus','?id=new')->with('success','Menu deleted successfully');
   }		
 
   
