@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('menuitems', function (Blueprint $table) {
             $table->bigInteger('id',20)->autoIncrement()->unsigned();
-            $table->char('title',255);
-            $table->char('name',255);
-            $table->char('slug',255);
-            $table->char('type',255);
-            $table->char('target',255);
+            $table->char('title',255);//varchar
+            $table->char('name',255);//varchar
+            $table->char('slug',255);//varchar
+            $table->char('type',255);//varchar
+            $table->char('target',255);//varchar
             $table->char('menu_id',20); //bigInteger
             $table->timestamps();
         });

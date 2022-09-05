@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->bigInteger('id',20)->autoIncrement()->unsigned();
-            $table->char('title',255);
-            $table->char('location',255)->nullable();
+            $table->char('title',255);//varchar
+            $table->char('location',255)->nullable();//varchar
             $table->longtext('content')->nullable();
             $table->timestamps();
         });

@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->bigInteger('id',20)->autoIncrement()->unsigned();
-            $table->char('title',255);
-            $table->char('slug',255);
+            $table->char('title',255);//varchar
+            $table->char('slug',255);//varchar
             $table->longtext('description')->nullable();
-            $table->char('image',255)->nullable();
-            $table->char('category',255);
-            $table->char('status',255);
+            $table->char('image',255)->nullable();//varchar
+            $table->char('category',255);//varchar
+            $table->char('status',255);//varchar
             $table->timestamps();
         });
     }
