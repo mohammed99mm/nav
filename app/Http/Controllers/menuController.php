@@ -106,7 +106,7 @@ class menuController extends Controller
 	if(menu::create($data)){ 
 	  $menu_data = menu::orderby('id','DESC')->first();          
 	  // FacadesSession::flash('success','Menu saved successfully !');          
-	  return redirect("manage-menus?id=$menu_data->id")->with('success','Menu saved successfully !');
+    return redirect()->route('admin.manage-menus','?id='.$menu_data->id)->with('success','Menu saved successfully !');
 	}else{
 	  return redirect()->back()->with('error','Failed to save menu !');
 	}

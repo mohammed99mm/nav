@@ -179,7 +179,7 @@
 								@if($selectedMenu != '')
 								<ul class="menu ui-sortable" id="menuitems">
 									@if(!empty($menuitems))
-	{{-- {{dd($selectedMenu->id);}} --}}
+	                                {{-- {{dd($selectedMenu->id);}} --}}
 											@foreach($menuitems as $key=>$item)
 												<li data-id="{{$item->id}}">
 													<span class="menu-item-bar">
