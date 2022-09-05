@@ -297,7 +297,7 @@ class menuController extends Controller
   public function destroy(Request $request){
     menuitem::where('menu_id',$request->id)->delete();  
     menu::findOrFail($request->id)->delete();
-    return redirect('manage-menus?id=new')->with('success','Menu deleted successfully');
+    return redirect()->route('admin.manage-menus','?id=new')->with('success','Menu deleted successfully');
   }		
 
   
